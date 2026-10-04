@@ -2,6 +2,7 @@ pyproject.toml
 modules/sim_ants/kernels.py
 modules/sim_ants/module.py
 simcore/__init__.py
+simcore/chunks.py
 simcore/event_bus.py
 simcore/fixedpoint.py
 simcore/kernel.py

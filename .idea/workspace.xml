@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edaa779e-f58d-4725-8e2f-c06c6cc8b491" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/simforge.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="edaa779e-f58d-4725-8e2f-c06c6cc8b491" name="Changes" comment="feat: Phase 1 – vertical minimal slice (simcore, sim-ants, raw-field verification)&#10;&#10;- simcore: fixed-point field convention (Q10), manifest-based module&#10;  registry, event bus, binary protocol v1 (struct, master-tick header),&#10;  30 Hz master tick loop with load-measurement (no tick skipping)&#10;- modules/sim_ants: Numba kernels (Jacobi diffusion, ant movement) with&#10;  per-ant LCG states for deterministic parallel execution&#10;- FastAPI server: /api/modules, /api/stats, /ws/sim (raw uint8 field&#10;  frame 0x10), static frontend&#10;- frontend: canvas raw-image verification with tick readout">
+      <change afterPath="$PROJECT_DIR$/simcore/chunks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simcore/protocol.py" beforeDir="false" afterPath="$PROJECT_DIR$/simcore/protocol.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simcore/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/simcore/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simforge.egg-info/SOURCES.txt" beforeDir="false" afterPath="$PROJECT_DIR$/simforge.egg-info/SOURCES.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,9 +20,28 @@
   <component name="EmbeddingIndexingInfo">
     <option name="cachedIndexableFilesCount" value="6" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "MMCodeMystic"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/MMCodeMystic/SimForge",
+    "accountId": "e4a32122-65af-4bcb-91ee-3f360faefa06"
+  }
+}]]></component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -247,9 +266,22 @@
       <option name="presentableId" value="Default" />
       <updated>1791064443323</updated>
     </task>
+    <task id="LOCAL-00001" summary="feat: Phase 1 – vertical minimal slice (simcore, sim-ants, raw-field verification)&#10;&#10;- simcore: fixed-point field convention (Q10), manifest-based module&#10;  registry, event bus, binary protocol v1 (struct, master-tick header),&#10;  30 Hz master tick loop with load-measurement (no tick skipping)&#10;- modules/sim_ants: Numba kernels (Jacobi diffusion, ant movement) with&#10;  per-ant LCG states for deterministic parallel execution&#10;- FastAPI server: /api/modules, /api/stats, /ws/sim (raw uint8 field&#10;  frame 0x10), static frontend&#10;- frontend: canvas raw-image verification with tick readout">
+      <option name="closed" value="true" />
+      <created>1791072516791</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1791072516791</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: Phase 1 – vertical minimal slice (simcore, sim-ants, raw-field verification)&#10;&#10;- simcore: fixed-point field convention (Q10), manifest-based module&#10;  registry, event bus, binary protocol v1 (struct, master-tick header),&#10;  30 Hz master tick loop with load-measurement (no tick skipping)&#10;- modules/sim_ants: Numba kernels (Jacobi diffusion, ant movement) with&#10;  per-ant LCG states for deterministic parallel execution&#10;- FastAPI server: /api/modules, /api/stats, /ws/sim (raw uint8 field&#10;  frame 0x10), static frontend&#10;- frontend: canvas raw-image verification with tick readout" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Phase 1 – vertical minimal slice (simcore, sim-ants, raw-field verification)&#10;&#10;- simcore: fixed-point field convention (Q10), manifest-based module&#10;  registry, event bus, binary protocol v1 (struct, master-tick header),&#10;  30 Hz master tick loop with load-measurement (no tick skipping)&#10;- modules/sim_ants: Numba kernels (Jacobi diffusion, ant movement) with&#10;  per-ant LCG states for deterministic parallel execution&#10;- FastAPI server: /api/modules, /api/stats, /ws/sim (raw uint8 field&#10;  frame 0x10), static frontend&#10;- frontend: canvas raw-image verification with tick readout" />
   </component>
 </project>
