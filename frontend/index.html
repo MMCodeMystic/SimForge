@@ -1,0 +1,51 @@
+﻿<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>SimForge – Phase 1 Verifikation</title>
+<style>
+  :root { --bg: #0b0e13; --fg: #d7dde8; --accent: #3ddc84; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+         font: 13px system-ui; display:flex; flex-direction:column;
+         align-items:center; gap:8px; padding:12px; }
+  canvas { image-rendering: pixelated; border:1px solid #2a3140; }
+</style>
+</head>
+<body>
+<h3>SimForge – Rohbild-Verifikation (Frame 0x10)</h3>
+<canvas id="c" width="256" height="256" style="width:512px;height:512px"></canvas>
+<div id="info">warte auf Verbindung…</div>
+<script>
+  const cv = document.getElementById("c"), ctx = cv.getContext("2d");
+  const info = document.getElementById("info");
+  const HEADER = 24; // !4sBBHIIQ = 4+1+1+2+4+4+8
+  const FIELD = 256 * 256;
+  let frames = 0, t0 = performance.now();
+  const ws = new WebSocket(`ws://${location.host}/ws/sim`);
+  ws.binaryType = "arraybuffer";
+  ws.onopen = () => info.textContent = "verbunden";
+  ws.onmessage = (ev) => {
+    const d = new DataView(ev.data);
+    if (d.getUint32(0) !== 0x534D4631) return; // "SMF1"
+    const tick = d.getUint32(8);  // Header: 4s(0) B(4) B(5) H(6) I=Tick(8) I=Len(12) Q(16)
+    const img = new Uint8ClampedArray(ev.data, HEADER, FIELD);
+    const rgba = new Uint8ClampedArray(FIELD * 4);
+    for (let i = 0; i < FIELD; i++) {
+      const v = img[i];
+      rgba[i*4]   = 0;              // R
+      rgba[i*4+1] = v;              // G (Pheromon)
+      rgba[i*4+2] = v >> 2;         // B
+      rgba[i*4+3] = 255;
+    }
+    ctx.putImageData(new ImageData(rgba, 256, 256), 0, 0);
+    frames++;
+    const s = performance.now();
+    if (s - t0 > 1000) {
+      info.textContent = `Tick ${tick} · ${frames} fps (Rohbild-Throttle: 7.5 Hz)`;
+      frames = 0; t0 = s;
+    }
+  };
+  ws.onclose = () => info.textContent = "getrennt";
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+﻿{
+  "id": "sim_ants",
+  "name": "Ameisen",
+  "version": "0.1.0",
+  "core_compat": ">=0.1,<0.2",
+  "entry": "module:AntsModule",
+  "fields": { "pheromone": "i4" },
+  "capabilities": ["grid:write", "events:emit"],
+  "i18n": { "de": "i18n/de.json", "en": "i18n/en.json" },
+  "theme_tokens": {
+    "ants.body": "#c8a25a", "ants.food": "#7de07d",
+    "field.pheromone.low": "#0a2f1a", "field.pheromone.high": "#3ddc84"
+  },
+  "meta": { "max_entities": 10000 }
+}
