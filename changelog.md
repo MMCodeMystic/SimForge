@@ -25,3 +25,12 @@
 ## 0.2.1
 ### Changed
 - Frontend in Modulstruktur aufgeteilt, Vorbereitung Theme-Tokens
+
+## 0.3.0 – Phase 4
+### Added
+- Theme-System über CSS Design-Tokens: Sets für dunkel und hell, Custom-Theme als Overlay-Mechanismus (Nutzer-Tokens als Inline-Variable, Persistenz in localStorage, Kaskade: Basis-Theme → Custom-Overlay).
+- Frontend-i18n: JSON-Kataloge (de/en), Fallback-Kette key → Sprache → en → Key, Laufzeit-Umschaltung ohne Reload, Schnittstelle registerCatalog() für Modul-Kataloge (Phase 3).
+- Toolbar mit Theme- und Sprachumschalter, dynamische Neubeschriftung bei jedem Wechsel.
+### Changed
+- Alle CSS-Rohwerte auf Token-Referenzen umgestellt; Canvas-Feldfarben werden aus Tokens interpoliert statt hartkodiert und folgen damit dem Theme.
+- Statuszeile und Trennungs-Meldung lokalisiert.

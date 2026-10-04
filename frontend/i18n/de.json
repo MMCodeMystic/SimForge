@@ -1,0 +1,16 @@
+{
+  "app.name": "SimForge",
+  "app.tagline": "Modulare Simulation",
+  "theme.dark": "Dunkel",
+  "theme.bright": "Hell",
+  "locale.de": "Deutsch",
+  "locale.en": "English",
+  "status.waiting": "verbinde…",
+  "status.connected": "verbunden",
+  "status.disconnected": "getrennt",
+  "status.tick": "Tick",
+  "status.hashOk": "Hash ok",
+  "status.corrected": "korrigiert",
+  "footer.hint": "Klick auf das Feld platziert Futter",
+  "footer.clientSim": "Client simuliert Diffusion lokal"
+}

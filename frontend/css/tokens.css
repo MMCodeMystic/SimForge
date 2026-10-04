@@ -1,0 +1,39 @@
+/* Design-Tokens. Jedes Theme ist ein Token-Set auf <body>.
+   Reihenfolge der Kaskade: theme-dark -> theme-bright -> theme-custom.
+   Ein Custom-Theme überschreibt nur die Tokens, die es definiert. */
+
+body.theme-dark {
+  --bg:            #0b0e13;
+  --bg-panel:      #11151d;
+  --border:        #2a3140;
+  --fg:            #d7dde8;
+  --fg-muted:      #9aa7bd;
+  --accent:        #3ddc84;
+  --accent-strong: #66f0a0;
+
+  /* Feld-Farben (Canvas). Hex -> rgba fürs Rendering aufgelöst in theme.js */
+  --field-empty-r: 0;    --field-empty-g: 0;    --field-empty-b: 0;
+  --field-low-r:   10;   --field-low-g:   47;   --field-low-b:   26;
+  --field-high-r:  61;   --field-high-g:  220;  --field-high-b:  84;
+}
+
+body.theme-bright {
+  --bg:            #f4f6fa;
+  --bg-panel:      #ffffff;
+  --border:        #c9d2e0;
+  --fg:            #1c2530;
+  --fg-muted:      #5a6a80;
+  --accent:        #0a8f4a;
+  --accent-strong: #067a3d;
+
+  --field-empty-r: 255;  --field-empty-g: 255;  --field-empty-b: 255;
+  --field-low-r:   214;  --field-low-g:   240;  --field-low-b:   222;
+  --field-high-r:  10;   --field-high-g:   143; --field-high-b:  74;
+}
+
+/* Custom-Theme: wird von theme.js aus localStorage befüllt.
+   Beispiel-Struktur (leer = erbt vom aktiven Basis-Theme): */
+body.theme-custom {
+  /* --accent: #ff8a3d; */
+}
+

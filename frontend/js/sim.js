@@ -1,6 +1,8 @@
 // Simulations- und Protokoll-Logik. Unverändert gegenüber der
 // Zwischenphase davor: dieselbe Integer-Arithmetik, dieselben Frames.
 "use strict";
+import { getThemeColors } from "./theme.js";
+import { t } from "./i18n.js"
 
 export const SIZE = 256, CHUNK = 64, NCHUNK = SIZE / CHUNK;
 const SCALE = 1024, FM = 1000 * SCALE;      // FIELD_MAX
@@ -96,13 +98,22 @@ export function startSim({ canvas, info }) {
     }
   }
 
-  function render() {
+function render() {
     const img = ctx.createImageData(SIZE, SIZE);
     const px = img.data;
+    const [er, eg, eb] = theme.empty;
+    const [lr, lg, lb] = theme.low;
+    const [hr, hg, hb] = theme.high;
     for (let i = 0; i < SIZE * SIZE; i++) {
-      const v = field[i] > 0 ? Math.floor((field[i] * 255) / FM) : 0;
+      let v = 0;
+      if (field[i] > 0) {
+        v = Math.floor((field[i] * 255) / FM); if (v > 255) v = 255;
+      }
       const o = i * 4;
-      px[o] = 0; px[o + 1] = v; px[o + 2] = v >> 2; px[o + 3] = 255;
+      px[o]     = Math.round(lr + (hr - lr) * (v / 255));
+      px[o + 1] = Math.round(lg + (hg - lg) * (v / 255));
+      px[o + 2] = Math.round(lb + (hb - lb) * (v / 255));
+      px[o + 3] = 255;
     }
     ctx.putImageData(img, 0, 0);
   }
@@ -148,7 +159,10 @@ export function startSim({ canvas, info }) {
       }
     }
   };
-  ws.onclose = () => { info.textContent = "getrennt"; };
+  ws.onclose = () => { info.textContent = t("status.disconnected"); };
+
+  let theme = getThemeColors();
+  document.addEventListener("theme-changed", () => { theme = getThemeColors(); });
 
   setInterval(() => {
     if (!synced) return;
@@ -157,10 +171,9 @@ export function startSim({ canvas, info }) {
     if (tick % 2 === 0) render();
   }, 1000 / 30);
 
-  setInterval(() => {
-    info.textContent = `Tick ${tick} · Hash ok ${matches} · korrigiert ${mismatches}`
-      + ` · ${synced ? "verbunden" : "wartet"}`;
-  }, 500);
+setInterval(() => {
+  info.textContent = `${t("status.tick")} ${tick} · ${t("status.hashOk")} ${matches} · ${t("status.corrected")} ${mismatches} · ${t(synced ? "status.connected" : "status.waiting")}`;
+}, 500);
 
   canvas.addEventListener("click", (e) => {
     const r = canvas.getBoundingClientRect();

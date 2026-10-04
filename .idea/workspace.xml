@@ -4,14 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edaa779e-f58d-4725-8e2f-c06c6cc8b491" name="Changes" comment="feat: Phase 2 – keyframes, checksums, client-side field simulation&#10;&#10;- simcore/chunks.py: 64x64 chunk layout, uint8 quantization, Numba&#10;  FNV-1a chunk hashes over quantized view (invisible low-bit drift&#10;  does not trigger healing)&#10;- protocol v1: KEYFRAME, EVENT, CHECKSUM frames, COMMAND path&#10;  (SUBSCRIBE_AOI, REQ_KEYFRAME, PLACE_FOOD); RAW_FIELD deprecated&#10;- server: join-burst of AOI keyframes, 1 Hz checksum rounds (AOI only),&#10;  client-driven drift healing, event broadcast to all clients,&#10;  sim lock between tick thread and snapshots&#10;- frontend: local integer field simulation (identical Jacobi/evaporation&#10;  arithmetic), hash comparison, throttled keyframe requests,&#10;  food placement via command -&gt; server -&gt; event">
-      <change afterPath="$PROJECT_DIR$/frontend/css/base.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/js/layout.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/js/sim.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/partials/footer.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/partials/header.html" afterDir="false" />
+    <list default="true" id="edaa779e-f58d-4725-8e2f-c06c6cc8b491" name="Changes" comment="refactor: split frontend into css, js modules and partials&#10;&#10;- index.html reduced to skeleton loading css/base.css and js/main.js&#10;- simulation/protocol logic moved to js/sim.js (exported as ES module)&#10;- header/footer fragments in partials/, injected by js/layout.js&#10;- css/base.css prepared for Phase 4 theme tokens (raw values marked)&#10;- no behavior changes">
+      <change afterPath="$PROJECT_DIR$/frontend/css/tokens.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/i18n/de.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/i18n/en.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/js/i18n.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/js/theme.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/changelog.md" beforeDir="false" afterPath="$PROJECT_DIR$/changelog.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/css/base.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/css/base.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/js/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/js/layout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/js/sim.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/js/sim.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/partials/footer.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/partials/footer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/partials/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/partials/header.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,9 +32,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="HTML File" />
         <option value="CSS File" />
         <option value="JavaScript File" />
-        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -52,61 +59,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.596082729220221" />
-      <entry key="MS500" value="2.9875731404540744" />
-      <entry key="S2" value="3.6921731874276165" />
-      <entry key="S5" value="3.8715970121592553" />
-      <entry key="S10" value="3.934880937428057" />
-      <entry key="S30" value="3.978085994372796" />
-      <entry key="S60" value="3.9890168027548505" />
-      <entry key="M2" value="3.994501926407793" />
-      <entry key="M5" value="3.9998475509444065" />
-      <entry key="M10" value="4.112412162650532" />
-      <entry key="M15" value="4.609485654085591" />
-      <entry key="M30" value="8.147953736547255" />
-      <entry key="H1" value="15.655035711609544" />
-      <entry key="H2" value="23.8250898416552" />
-      <entry key="H4" value="29.937744879704983" />
-      <entry key="D1" value="36.49620720784398" />
-      <entry key="W1" value="37.78088264436109" />
-    </decayedCancelled>
-    <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
-      <entry key="S2" value="0.0" />
-      <entry key="S5" value="7.391945853281994E-276" />
-      <entry key="S10" value="2.718813317107666E-138" />
-      <entry key="S30" value="1.3957033776154838E-46" />
-      <entry key="S60" value="1.181398907065469E-23" />
-      <entry key="M2" value="3.437148392294794E-12" />
-      <entry key="M5" value="2.597044031655152E-5" />
-      <entry key="M10" value="0.005096120123834555" />
-      <entry key="M15" value="0.029613729446435894" />
-      <entry key="M30" value="0.17208640110838488" />
-      <entry key="H1" value="0.41483297977425176" />
-      <entry key="H2" value="0.6440752904546577" />
-      <entry key="H4" value="0.8025430147067867" />
-      <entry key="D1" value="0.9640022624617862" />
-      <entry key="W1" value="0.9947763143708037" />
+      <entry key="S2" value="3.0844026515173982E-149" />
+      <entry key="S5" value="4.457153676663023E-60" />
+      <entry key="S10" value="2.9387585372699425E-30" />
+      <entry key="S30" value="3.344017917707728E-10" />
+      <entry key="S60" value="4.565578578698775E-5" />
+      <entry key="M2" value="0.019583922628524146" />
+      <entry key="M5" value="0.8549579681165896" />
+      <entry key="M10" value="3.152346729640727" />
+      <entry key="M15" value="4.90343155180124" />
+      <entry key="M30" value="7.656130626810655" />
+      <entry key="H1" value="9.67916701484637" />
+      <entry key="H2" value="12.616090089635781" />
+      <entry key="H4" value="19.78613645170948" />
+      <entry key="D1" value="41.443132072853814" />
+      <entry key="W1" value="48.64325342985056" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0000000004458998" />
+      <entry key="S60" value="1.0000404674573244" />
+      <entry key="M2" value="1.0135764416431496" />
+      <entry key="M5" value="1.4648618268590075" />
+      <entry key="M10" value="2.5214936189095023" />
+      <entry key="M15" value="3.261038576698867" />
+      <entry key="M30" value="4.361569155169052" />
+      <entry key="H1" value="5.102127689152061" />
+      <entry key="H2" value="5.5785946138116005" />
+      <entry key="H4" value="5.98415888717968" />
+      <entry key="D1" value="6.739461137595659" />
+      <entry key="W1" value="6.959338537574197" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.523647494857964" />
-      <entry key="MS500" value="2.959304919470232" />
-      <entry key="S2" value="3.683500786566245" />
-      <entry key="S5" value="3.8679679207181574" />
-      <entry key="S10" value="3.9330382882484605" />
-      <entry key="S30" value="3.9774653953286987" />
-      <entry key="S60" value="3.988705696647267" />
-      <entry key="M2" value="3.9943461710361152" />
-      <entry key="M5" value="3.999810509283318" />
-      <entry key="M10" value="4.117422370996936" />
-      <entry key="M15" value="4.63886516907259" />
-      <entry key="M30" value="8.319391676129838" />
-      <entry key="H1" value="16.069077570707098" />
-      <entry key="H2" value="24.46854466949908" />
-      <entry key="H4" value="30.739899047668892" />
-      <entry key="D1" value="37.460131212881954" />
-      <entry key="W1" value="38.775647411428544" />
+      <entry key="MS100" value="2.716160193628449E-6" />
+      <entry key="MS500" value="0.0770532703414879" />
+      <entry key="S2" value="0.5268630831697736" />
+      <entry key="S5" value="0.773889773238062" />
+      <entry key="S10" value="0.8797100506633205" />
+      <entry key="S30" value="0.9581787129066598" />
+      <entry key="S60" value="0.9789491710632615" />
+      <entry key="M2" value="1.0220683979879948" />
+      <entry key="M5" value="2.3094021790903896" />
+      <entry key="M10" value="5.6617702382376525" />
+      <entry key="M15" value="8.153246597591162" />
+      <entry key="M30" value="12.00973441013812" />
+      <entry key="H1" value="14.77652035206301" />
+      <entry key="H2" value="18.192022965087613" />
+      <entry key="H4" value="25.768818199646155" />
+      <entry key="D1" value="48.18229302236933" />
+      <entry key="W1" value="55.60254670907814" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
@@ -288,7 +295,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791095873969</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="refactor: split frontend into css, js modules and partials&#10;&#10;- index.html reduced to skeleton loading css/base.css and js/main.js&#10;- simulation/protocol logic moved to js/sim.js (exported as ES module)&#10;- header/footer fragments in partials/, injected by js/layout.js&#10;- css/base.css prepared for Phase 4 theme tokens (raw values marked)&#10;- no behavior changes">
+      <option name="closed" value="true" />
+      <created>1791096611403</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1791096611403</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -297,6 +312,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: Phase 1 – vertical minimal slice (simcore, sim-ants, raw-field verification)&#10;&#10;- simcore: fixed-point field convention (Q10), manifest-based module&#10;  registry, event bus, binary protocol v1 (struct, master-tick header),&#10;  30 Hz master tick loop with load-measurement (no tick skipping)&#10;- modules/sim_ants: Numba kernels (Jacobi diffusion, ant movement) with&#10;  per-ant LCG states for deterministic parallel execution&#10;- FastAPI server: /api/modules, /api/stats, /ws/sim (raw uint8 field&#10;  frame 0x10), static frontend&#10;- frontend: canvas raw-image verification with tick readout" />
     <MESSAGE value="feat: Phase 2 – keyframes, checksums, client-side field simulation&#10;&#10;- simcore/chunks.py: 64x64 chunk layout, uint8 quantization, Numba&#10;  FNV-1a chunk hashes over quantized view (invisible low-bit drift&#10;  does not trigger healing)&#10;- protocol v1: KEYFRAME, EVENT, CHECKSUM frames, COMMAND path&#10;  (SUBSCRIBE_AOI, REQ_KEYFRAME, PLACE_FOOD); RAW_FIELD deprecated&#10;- server: join-burst of AOI keyframes, 1 Hz checksum rounds (AOI only),&#10;  client-driven drift healing, event broadcast to all clients,&#10;  sim lock between tick thread and snapshots&#10;- frontend: local integer field simulation (identical Jacobi/evaporation&#10;  arithmetic), hash comparison, throttled keyframe requests,&#10;  food placement via command -&gt; server -&gt; event" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Phase 2 – keyframes, checksums, client-side field simulation&#10;&#10;- simcore/chunks.py: 64x64 chunk layout, uint8 quantization, Numba&#10;  FNV-1a chunk hashes over quantized view (invisible low-bit drift&#10;  does not trigger healing)&#10;- protocol v1: KEYFRAME, EVENT, CHECKSUM frames, COMMAND path&#10;  (SUBSCRIBE_AOI, REQ_KEYFRAME, PLACE_FOOD); RAW_FIELD deprecated&#10;- server: join-burst of AOI keyframes, 1 Hz checksum rounds (AOI only),&#10;  client-driven drift healing, event broadcast to all clients,&#10;  sim lock between tick thread and snapshots&#10;- frontend: local integer field simulation (identical Jacobi/evaporation&#10;  arithmetic), hash comparison, throttled keyframe requests,&#10;  food placement via command -&gt; server -&gt; event" />
+    <MESSAGE value="refactor: split frontend into css, js modules and partials&#10;&#10;- index.html reduced to skeleton loading css/base.css and js/main.js&#10;- simulation/protocol logic moved to js/sim.js (exported as ES module)&#10;- header/footer fragments in partials/, injected by js/layout.js&#10;- css/base.css prepared for Phase 4 theme tokens (raw values marked)&#10;- no behavior changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: split frontend into css, js modules and partials&#10;&#10;- index.html reduced to skeleton loading css/base.css and js/main.js&#10;- simulation/protocol logic moved to js/sim.js (exported as ES module)&#10;- header/footer fragments in partials/, injected by js/layout.js&#10;- css/base.css prepared for Phase 4 theme tokens (raw values marked)&#10;- no behavior changes" />
   </component>
 </project>

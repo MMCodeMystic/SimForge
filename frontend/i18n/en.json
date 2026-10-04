@@ -1,0 +1,16 @@
+{
+  "app.name": "SimForge",
+  "app.tagline": "Modular simulation",
+  "theme.dark": "Dark",
+  "theme.bright": "Light",
+  "locale.de": "Deutsch",
+  "locale.en": "English",
+  "status.waiting": "connecting…",
+  "status.connected": "connected",
+  "status.disconnected": "disconnected",
+  "status.tick": "Tick",
+  "status.hashOk": "hash ok",
+  "status.corrected": "corrected",
+  "footer.hint": "Click on the field to place food",
+  "footer.clientSim": "client simulates diffusion locally"
+}

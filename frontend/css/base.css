@@ -1,5 +1,5 @@
-/* Basis-Reset und Tokens-Vorlage. Phase 4 ersetzt die Raw-Werte
-   durch CSS Custom Properties (dark/bright/Nutzer-Themes). */
+/* Alle Raw-Werte sind jetzt Tokens. Neue Farben NIE mehr hart setzen –
+   immer ein Token ergänzen (tokens.css) und darauf referenzieren. */
 
 * { box-sizing: border-box; }
 
@@ -8,37 +8,58 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #0b0e13;          /* -> var(--bg) in Phase 4 */
-  color: #d7dde8;               /* -> var(--fg) in Phase 4 */
+  background: var(--bg);
+  color: var(--fg);
   font: 13px system-ui, sans-serif;
+  transition: background 0.2s, color 0.2s;
 }
 
-/* ---- Header / Footer (Fragmente aus partials/) ---- */
 #site-header, #site-footer {
   padding: 10px 16px;
-  border-bottom: 1px solid #2a3140;
-  background: #11151d;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-panel);
 }
 #site-footer {
   border-bottom: none;
-  border-top: 1px solid #2a3140;
+  border-top: 1px solid var(--border);
   margin-top: auto;
   font-size: 12px;
-  color: #9aa7bd;
+  color: var(--fg-muted);
 }
+
 #site-header h1 {
   margin: 0;
   font-size: 15px;
   font-weight: 600;
-  color: #3ddc84;               /* -> var(--accent) in Phase 4 */
+  color: var(--accent);
 }
 #site-header .tagline {
   margin: 2px 0 0;
   font-size: 12px;
-  color: #9aa7bd;
+  color: var(--fg-muted);
 }
 
-/* ---- Bühne (Canvas + Status) ---- */
+.toolbar {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.toolbar button, .toolbar select {
+  background: var(--bg-panel);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font: inherit;
+  cursor: pointer;
+}
+.toolbar button:hover, .toolbar select:hover {
+  border-color: var(--accent);
+}
+.toolbar .spacer { flex: 1; }
+
 .stage {
   flex: 1;
   display: flex;
@@ -49,17 +70,20 @@ body {
   padding: 16px;
 }
 
-#site-header h3, .stage h3 {
-  margin: 0;
-}
-
 canvas#c {
+  width: 512px;
+  height: 512px;               /* sichtbare Größe: hier anpassen */
   image-rendering: pixelated;
-  border: 1px solid #2a3140;
+  border: 1px solid var(--border);
   cursor: crosshair;
 }
 
 .statusline {
   font-family: ui-monospace, monospace;
-  color: #9aa7bd;
+  color: var(--fg-muted);
+}
+
+[data-theme-active="1"] {
+  border-color: var(--accent) !important;
+  color: var(--accent);
 }
