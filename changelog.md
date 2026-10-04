@@ -21,3 +21,7 @@
 ### Measurements
 - Server-Tick 0,38 ms bei 10.000 Ameisen (Budget 33 ms), bestätigt in-process-Betrieb ohne Worker-Prozess für die aktuelle Last.
 - max_tick_ms ~312 ms ist einmalige Numba-JIT-Kompilierung beim ersten Tick, kein Lastproblem.
+
+## 0.2.1
+### Changed
+- Frontend in Modulstruktur aufgeteilt, Vorbereitung Theme-Tokens

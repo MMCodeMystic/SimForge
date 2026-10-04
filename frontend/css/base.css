@@ -1,0 +1,65 @@
+/* Basis-Reset und Tokens-Vorlage. Phase 4 ersetzt die Raw-Werte
+   durch CSS Custom Properties (dark/bright/Nutzer-Themes). */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #0b0e13;          /* -> var(--bg) in Phase 4 */
+  color: #d7dde8;               /* -> var(--fg) in Phase 4 */
+  font: 13px system-ui, sans-serif;
+}
+
+/* ---- Header / Footer (Fragmente aus partials/) ---- */
+#site-header, #site-footer {
+  padding: 10px 16px;
+  border-bottom: 1px solid #2a3140;
+  background: #11151d;
+}
+#site-footer {
+  border-bottom: none;
+  border-top: 1px solid #2a3140;
+  margin-top: auto;
+  font-size: 12px;
+  color: #9aa7bd;
+}
+#site-header h1 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #3ddc84;               /* -> var(--accent) in Phase 4 */
+}
+#site-header .tagline {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #9aa7bd;
+}
+
+/* ---- Bühne (Canvas + Status) ---- */
+.stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+}
+
+#site-header h3, .stage h3 {
+  margin: 0;
+}
+
+canvas#c {
+  image-rendering: pixelated;
+  border: 1px solid #2a3140;
+  cursor: crosshair;
+}
+
+.statusline {
+  font-family: ui-monospace, monospace;
+  color: #9aa7bd;
+}

@@ -4,13 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edaa779e-f58d-4725-8e2f-c06c6cc8b491" name="Changes" comment="feat: Phase 1 – vertical minimal slice (simcore, sim-ants, raw-field verification)&#10;&#10;- simcore: fixed-point field convention (Q10), manifest-based module&#10;  registry, event bus, binary protocol v1 (struct, master-tick header),&#10;  30 Hz master tick loop with load-measurement (no tick skipping)&#10;- modules/sim_ants: Numba kernels (Jacobi diffusion, ant movement) with&#10;  per-ant LCG states for deterministic parallel execution&#10;- FastAPI server: /api/modules, /api/stats, /ws/sim (raw uint8 field&#10;  frame 0x10), static frontend&#10;- frontend: canvas raw-image verification with tick readout">
-      <change afterPath="$PROJECT_DIR$/simcore/chunks.py" afterDir="false" />
+    <list default="true" id="edaa779e-f58d-4725-8e2f-c06c6cc8b491" name="Changes" comment="feat: Phase 2 – keyframes, checksums, client-side field simulation&#10;&#10;- simcore/chunks.py: 64x64 chunk layout, uint8 quantization, Numba&#10;  FNV-1a chunk hashes over quantized view (invisible low-bit drift&#10;  does not trigger healing)&#10;- protocol v1: KEYFRAME, EVENT, CHECKSUM frames, COMMAND path&#10;  (SUBSCRIBE_AOI, REQ_KEYFRAME, PLACE_FOOD); RAW_FIELD deprecated&#10;- server: join-burst of AOI keyframes, 1 Hz checksum rounds (AOI only),&#10;  client-driven drift healing, event broadcast to all clients,&#10;  sim lock between tick thread and snapshots&#10;- frontend: local integer field simulation (identical Jacobi/evaporation&#10;  arithmetic), hash comparison, throttled keyframe requests,&#10;  food placement via command -&gt; server -&gt; event">
+      <change afterPath="$PROJECT_DIR$/frontend/css/base.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/js/layout.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/js/sim.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/partials/footer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/partials/header.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simcore/protocol.py" beforeDir="false" afterPath="$PROJECT_DIR$/simcore/protocol.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simcore/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/simcore/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simforge.egg-info/SOURCES.txt" beforeDir="false" afterPath="$PROJECT_DIR$/simforge.egg-info/SOURCES.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +25,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="CSS File" />
+        <option value="JavaScript File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -116,6 +120,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -127,6 +132,7 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
+    "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -274,7 +280,15 @@
       <option name="project" value="LOCAL" />
       <updated>1791072516791</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: Phase 2 – keyframes, checksums, client-side field simulation&#10;&#10;- simcore/chunks.py: 64x64 chunk layout, uint8 quantization, Numba&#10;  FNV-1a chunk hashes over quantized view (invisible low-bit drift&#10;  does not trigger healing)&#10;- protocol v1: KEYFRAME, EVENT, CHECKSUM frames, COMMAND path&#10;  (SUBSCRIBE_AOI, REQ_KEYFRAME, PLACE_FOOD); RAW_FIELD deprecated&#10;- server: join-burst of AOI keyframes, 1 Hz checksum rounds (AOI only),&#10;  client-driven drift healing, event broadcast to all clients,&#10;  sim lock between tick thread and snapshots&#10;- frontend: local integer field simulation (identical Jacobi/evaporation&#10;  arithmetic), hash comparison, throttled keyframe requests,&#10;  food placement via command -&gt; server -&gt; event">
+      <option name="closed" value="true" />
+      <created>1791095873969</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1791095873969</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -282,6 +296,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: Phase 1 – vertical minimal slice (simcore, sim-ants, raw-field verification)&#10;&#10;- simcore: fixed-point field convention (Q10), manifest-based module&#10;  registry, event bus, binary protocol v1 (struct, master-tick header),&#10;  30 Hz master tick loop with load-measurement (no tick skipping)&#10;- modules/sim_ants: Numba kernels (Jacobi diffusion, ant movement) with&#10;  per-ant LCG states for deterministic parallel execution&#10;- FastAPI server: /api/modules, /api/stats, /ws/sim (raw uint8 field&#10;  frame 0x10), static frontend&#10;- frontend: canvas raw-image verification with tick readout" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Phase 1 – vertical minimal slice (simcore, sim-ants, raw-field verification)&#10;&#10;- simcore: fixed-point field convention (Q10), manifest-based module&#10;  registry, event bus, binary protocol v1 (struct, master-tick header),&#10;  30 Hz master tick loop with load-measurement (no tick skipping)&#10;- modules/sim_ants: Numba kernels (Jacobi diffusion, ant movement) with&#10;  per-ant LCG states for deterministic parallel execution&#10;- FastAPI server: /api/modules, /api/stats, /ws/sim (raw uint8 field&#10;  frame 0x10), static frontend&#10;- frontend: canvas raw-image verification with tick readout" />
+    <MESSAGE value="feat: Phase 2 – keyframes, checksums, client-side field simulation&#10;&#10;- simcore/chunks.py: 64x64 chunk layout, uint8 quantization, Numba&#10;  FNV-1a chunk hashes over quantized view (invisible low-bit drift&#10;  does not trigger healing)&#10;- protocol v1: KEYFRAME, EVENT, CHECKSUM frames, COMMAND path&#10;  (SUBSCRIBE_AOI, REQ_KEYFRAME, PLACE_FOOD); RAW_FIELD deprecated&#10;- server: join-burst of AOI keyframes, 1 Hz checksum rounds (AOI only),&#10;  client-driven drift healing, event broadcast to all clients,&#10;  sim lock between tick thread and snapshots&#10;- frontend: local integer field simulation (identical Jacobi/evaporation&#10;  arithmetic), hash comparison, throttled keyframe requests,&#10;  food placement via command -&gt; server -&gt; event" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Phase 2 – keyframes, checksums, client-side field simulation&#10;&#10;- simcore/chunks.py: 64x64 chunk layout, uint8 quantization, Numba&#10;  FNV-1a chunk hashes over quantized view (invisible low-bit drift&#10;  does not trigger healing)&#10;- protocol v1: KEYFRAME, EVENT, CHECKSUM frames, COMMAND path&#10;  (SUBSCRIBE_AOI, REQ_KEYFRAME, PLACE_FOOD); RAW_FIELD deprecated&#10;- server: join-burst of AOI keyframes, 1 Hz checksum rounds (AOI only),&#10;  client-driven drift healing, event broadcast to all clients,&#10;  sim lock between tick thread and snapshots&#10;- frontend: local integer field simulation (identical Jacobi/evaporation&#10;  arithmetic), hash comparison, throttled keyframe requests,&#10;  food placement via command -&gt; server -&gt; event" />
   </component>
 </project>

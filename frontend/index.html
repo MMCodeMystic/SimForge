@@ -1,204 +1,21 @@
 ﻿<!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<title>SimForge – Phase 2: Keyframes + Drift-Healing</title>
-<style>
-  :root { --bg:#0b0e13; --fg:#d7dde8; --accent:#3ddc84; }
-  body { margin:0; background:var(--bg); color:var(--fg);
-         font:13px system-ui; display:flex; flex-direction:column;
-         align-items:center; gap:8px; padding:12px; }
-  canvas { image-rendering:pixelated; border:1px solid #2a3140;
-           cursor:crosshair; }
-  #info { font-family:ui-monospace,monospace; color:#9aa7bd; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SimForge – Phase 2: Keyframes + Drift-Healing</title>
+  <link rel="stylesheet" href="css/base.css">
 </head>
 <body>
-<h3>SimForge – Phase 2 (Klick = Futter platzieren)</h3>
-<canvas id="c" width="256" height="256" style="width:512px;height:512px"></canvas>
-<div id="info">verbinde…</div>
-<script>
-"use strict";
-// ---- Konstanten: identisch zu simcore (Fixed-Point, Skala 1024) ----
-const SIZE = 256, CHUNK = 64, NCHUNK = SIZE / CHUNK;
-const SCALE = 1024, FM = 1000 * SCALE;      // FIELD_MAX
-const EVAP = 1014;                          // = to_fixed(0.99): round(0.99*1024)
-const DENOM = 9 * SCALE;                    // Jacobi-Mittelung 1/9
-const FOOD = 400 * SCALE;                   // = to_fixed(400)
-const HEADER = 24;
+  <header id="site-header"></header>
 
-const cv = document.getElementById("c"), ctx = cv.getContext("2d");
-const info = document.getElementById("info");
+  <main class="stage">
+    <canvas id="c" width="256" height="256"></canvas>
+    <div id="info" class="statusline">verbinde…</div>
+  </main>
 
-// ---- Lokaler Zustand ----
-let field = new Int32Array(SIZE * SIZE);   // Fixed-Point
-let buf   = new Int32Array(SIZE * SIZE);
-let tick = 0, synced = false;
-let matches = 0, mismatches = 0, lastReq = 0;
+  <footer id="site-footer"></footer>
 
-// ---- Protokoll ----
-function packFrame(type, payload) {
-  const b = new ArrayBuffer(HEADER + payload.length);
-  const d = new DataView(b);
-  d.setUint8(0,0x53); d.setUint8(1,0x4D); d.setUint8(2,0x46); d.setUint8(3,0x31); // "SMF1"
-  d.setUint8(4, type); d.setUint8(5, 0);
-  d.setUint16(6, 0);
-  d.setUint32(8, tick);          // Master-Tick des Clients beim Senden
-  d.setUint32(12, payload.length);
-  d.setUint32(16, 0); d.setUint32(20, 0);   // session = 0
-  new Uint8Array(b, HEADER).set(payload);
-  return b;
-}
-
-function send(type, payload) { ws.send(packFrame(type, payload)); }
-
-// ---- Lokale Feld-Simulation (dieselbe Integer-Arithmetik wie Numba) ----
-function diffuse() {
-  // Jacobi: identische Formel, identische Reihenfolge wie kernels.diffuse_fixed
-  for (let y = 1; y < SIZE - 1; y++) {
-    const row = y * SIZE;
-    for (let x = 1; x < SIZE - 1; x++) {
-      const i = row + x;
-      const s = field[i - SIZE] + field[i + SIZE]
-              + field[i - 1] + field[i + 1] + 4 * field[i];
-      let v = Math.floor((s * EVAP) / DENOM);   // exakt, alles < 2^53
-      if (v > FM) v = FM;
-      buf[i] = v;
-    }
-  }
-  const t = field; field = buf; buf = t;   // Swap (Ränder bleiben 0)
-}
-
-// ---- Quantisierung + Hash (identisch zu simcore/chunks.py) ----
-const qbuf = new Uint8Array(SIZE * SIZE);
-function quantize() {
-  for (let i = 0; i < field.length; i++) {
-    const f = field[i];
-    let v = 0;
-    if (f > 0) { v = Math.floor((f * 255) / FM); if (v > 255) v = 255; }
-    qbuf[i] = v;
-  }
-  return qbuf;
-}
-function hashChunk(cx, cy) {
-  // FNV-1a, identische Reihenfolge wie _hash_chunks
-  let h = 2166136261;
-  const x0 = cx * CHUNK, y0 = cy * CHUNK;
-  for (let y = 0; y < CHUNK; y++) {
-    const row = (y0 + y) * SIZE + x0;
-    for (let x = 0; x < CHUNK; x++) {
-      h = Math.imul(h ^ qbuf[row + x], 16777619) >>> 0;
-    }
-  }
-  return h >>> 0;
-}
-
-// ---- Keyframe/Event anwenden ----
-function applyKeyframe(p) {
-  const cx = p[0], cy = p[1], data = p.subarray(2);
-  for (let y = 0; y < CHUNK; y++) {
-    const dst = (cy * CHUNK + y) * SIZE + cx * CHUNK;
-    for (let x = 0; x < CHUNK; x++) {
-      field[dst + x] = Math.round((data[y * CHUNK + x] * FM) / 255);
-    }
-  }
-}
-function applyFoodSpike(x, y) {
-  // MUSS identisch zu server._apply_food_spike sein (Diamant 5x5, floor)
-  for (let dy = -2; dy <= 2; dy++) {
-    for (let dx = -2; dx <= 2; dx++) {
-      const w = 3 - (Math.abs(dx) + Math.abs(dy));
-      if (w <= 0) continue;
-      const yy = y + dy, xx = x + dx;
-      if (yy >= 0 && yy < SIZE && xx >= 0 && xx < SIZE) {
-        const i = yy * SIZE + xx;
-        let v = field[i] + Math.floor((FOOD * w) / 3);
-        if (v > FM) v = FM;
-        field[i] = v;
-      }
-    }
-  }
-}
-
-// ---- WebSocket ----
-const ws = new WebSocket(`ws://${location.host}/ws/sim`);
-ws.binaryType = "arraybuffer";
-ws.onopen = () => {
-  // Volle Welt abonnieren (AOI-Pfad testen; später: Viewport)
-  const b = new Uint8Array(9); b[0]=0x01;
-  const dv = new DataView(b.buffer);
-  dv.setUint16(1,0); dv.setUint16(3,0); dv.setUint16(5,255); dv.setUint16(7,255);
-  send(0x04, b);
-};
-ws.onmessage = (ev) => {
-  const d = new DataView(ev.data);
-  if (d.getUint32(0) !== 0x534D4631) return;   // "SMF1"
-  const type = d.getUint8(4);
-  const frameTick = d.getUint32(8);
-  if (!synced) { tick = frameTick; synced = true; }
-  if (frameTick - tick > 120) tick = frameTick;  // Drift-Wächter
-  const p = new Uint8Array(ev.data, HEADER);
-
-  if (type === 0x01) {              // KEYFRAME
-    applyKeyframe(p);
-  } else if (type === 0x02) {       // EVENT
-    const x = d.getUint16(HEADER + 1), y = d.getUint16(HEADER + 3);
-    applyFoodSpike(x, y);
-  } else if (type === 0x03) {      // CHECKSUM
-    const count = d.getUint16(HEADER);
-    quantize();
-    const want = [];
-    for (let i = 0; i < count; i++) {
-      const off = HEADER + 2 + i * 6;
-      const cx = d.getUint8(off), cy = d.getUint8(off + 1);
-      const serverHash = d.getUint32(off + 2);
-      if (hashChunk(cx, cy) === serverHash) matches++;
-      else { mismatches++; if (cx < NCHUNK && cy < NCHUNK) want.push(cx, cy); }
-    }
-    // Abweichende Chunks anfordern – gedrosselt (max 1 Anfrage/s)
-    if (want.length && performance.now() - lastReq > 1000) {
-      lastReq = performance.now();
-      const b = new Uint8Array(2 + want.length);
-      b[0] = 0x02; b[1] = want.length / 2;
-      b.set(want, 2);
-      send(0x04, b);
-    }
-  }
-};
-ws.onclose = () => info.textContent = "getrennt";
-
-// ---- Lokaler 30-Hz-Tick: Diffusion jeden 4. Tick, Render jeden 2. ----
-setInterval(() => {
-  if (!synced) return;
-  tick++;
-  if (tick % 4 === 0) diffuse();
-  if (tick % 2 === 0) render();
-}, 1000 / 30);
-
-function render() {
-  const img = ctx.createImageData(SIZE, SIZE);
-  const px = img.data;
-  for (let i = 0; i < SIZE * SIZE; i++) {
-    const v = field[i] > 0 ? Math.floor((field[i] * 255) / FM) : 0;
-    const o = i * 4;
-    px[o] = 0; px[o + 1] = v; px[o + 2] = v >> 2; px[o + 3] = 255;
-  }
-  ctx.putImageData(img, 0, 0);
-}
-setInterval(() => {
-  info.textContent = `Tick ${tick} · Hash ok ${matches} · korrigiert ${mismatches}`
-    + ` · ${synced ? "verbunden" : "wartet"}`;
-}, 500);
-
-// ---- Klick = Futter (Command, niemals lokaler Zustand) ----
-cv.addEventListener("click", (e) => {
-  const r = cv.getBoundingClientRect();
-  const x = Math.floor((e.clientX - r.left) / r.width * SIZE);
-  const y = Math.floor((e.clientY - r.top) / r.height * SIZE);
-  const b = new Uint8Array(5); b[0] = 0x03;
-  new DataView(b.buffer).setUint16(1, x); new DataView(b.buffer).setUint16(3, y);
-  send(0x04, b);
-});
-</script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
